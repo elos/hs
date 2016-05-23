@@ -23,11 +23,13 @@ wsSource = do
     x <- liftIO $ WS.receiveData conn
     yield x
 
+changes :: (MonadIO m) => Source (WebsocketsT m) Change
 changes = wsSource $= changeConduit
 
 changeConduit :: (Monad m) => Conduit B.ByteString m Change
 changeConduit = CL.mapMaybe decode
 
+agents :: Sink Change (WebsocketsT IO) [()]
 agents = sequenceSinks [echoAgent, dummyAgent, echoAgent]
 
 app :: WS.ClientApp ()
@@ -36,5 +38,6 @@ app conn = forever $ runReaderT (changes $$ agents) conn
 echoAgent :: Agent
 echoAgent = awaitForever (liftIO . putStrLn . show)
 
+dummyAgent :: Agent
 dummyAgent = awaitForever (liftIO . putStrLn . const "YOOO")
 
