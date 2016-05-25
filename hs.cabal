@@ -18,11 +18,13 @@ library
   exposed-modules:     Elos
                      , Elos.DB
                      , Elos.Autonomous
+                     , Elos.Config
                      , Elos.Models
   build-depends:       base >= 4.7 && < 5
                      , aeson
                      , bytestring
                      , conduit
+                     , directory
                      , lens
                      , mtl
                      , text

@@ -30,7 +30,7 @@ changeConduit :: (Monad m) => Conduit B.ByteString m Change
 changeConduit = CL.mapMaybe decode
 
 agents :: Sink Change (WebsocketsT IO) [()]
-agents = sequenceSinks [echoAgent, dummyAgent, echoAgent]
+agents = sequenceSinks [echoAgent, dummyAgent "Hello", echoAgent]
 
 app :: WS.ClientApp ()
 app conn = forever $ runReaderT (changes $$ agents) conn
@@ -38,6 +38,6 @@ app conn = forever $ runReaderT (changes $$ agents) conn
 echoAgent :: Agent
 echoAgent = awaitForever (liftIO . putStrLn . show)
 
-dummyAgent :: Agent
-dummyAgent = awaitForever (liftIO . putStrLn . const "YOOO")
+dummyAgent :: String -> Agent
+dummyAgent output = awaitForever (liftIO . putStrLn . const output)
 
