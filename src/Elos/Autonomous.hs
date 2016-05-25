@@ -24,10 +24,10 @@ wsSource = do
     yield x
 
 changes :: (MonadIO m) => Source (WebsocketsT m) Change
-changes = wsSource $= changeConduit
+changes = wsSource $= jsonConduit
 
-changeConduit :: (Monad m) => Conduit B.ByteString m Change
-changeConduit = CL.mapMaybe decode
+jsonConduit :: (Monad m, FromJSON a) => Conduit B.ByteString m a
+jsonConduit = CL.mapMaybe decode
 
 agents :: Sink Change (WebsocketsT IO) [()]
 agents = sequenceSinks [echoAgent, dummyAgent "Hello", echoAgent]
