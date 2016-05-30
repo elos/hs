@@ -1,6 +1,15 @@
 module Main where
 
-import qualified Elos
+import Elos
+import Elos.Autonomous
+
+echoAgent :: Agent
+echoAgent = listenForChange (putStrLn . show)
+
+dummyAgent :: String -> Agent
+dummyAgent output = listenForChange (putStrLn . const output)
+
+agents = [echoAgent, dummyAgent "Hello!", echoAgent]
 
 main :: IO ()
-main = Elos.main
+main = elosRunApp $ agentApp agents

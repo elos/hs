@@ -29,15 +29,10 @@ changes = wsSource $= jsonConduit
 jsonConduit :: (Monad m, FromJSON a) => Conduit B.ByteString m a
 jsonConduit = CL.mapMaybe decode
 
-agents :: Sink Change (WebsocketsT IO) [()]
-agents = sequenceSinks [echoAgent, dummyAgent "Hello", echoAgent]
+agentApp :: [Agent] -> WS.ClientApp ()
+agentApp agents conn = forever $ runReaderT (changes $$ agentsSink) conn
+    where agentsSink = sequenceSinks agents
 
-app :: WS.ClientApp ()
-app conn = forever $ runReaderT (changes $$ agents) conn
-
-echoAgent :: Agent
-echoAgent = awaitForever (liftIO . putStrLn . show)
-
-dummyAgent :: String -> Agent
-dummyAgent output = awaitForever (liftIO . putStrLn . const output)
+listenForChange :: (Change -> IO ()) -> Agent
+listenForChange f = awaitForever (liftIO . f)
 

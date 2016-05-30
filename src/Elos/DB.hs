@@ -37,6 +37,3 @@ instance FromJSON Change where
         record <- o .: "record"
         return $ cons recordKind record
 
-recordRoute = "/record/"
-recordQueryRoute = "/record/query/"
-
