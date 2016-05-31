@@ -1,6 +1,10 @@
-module Elos.Autonomous where
+module Elos.Autonomous (
+    Agent,
+    agentApp,
+    listenForChange,
+    ) where
 
-import Elos.DB
+import Elos.DB (Change)
 
 import Control.Monad (forever)
 import Control.Monad.IO.Class (liftIO)

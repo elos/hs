@@ -2,7 +2,7 @@
 
 module Elos.Config where
 
-import System.Directory
+import System.Directory (getHomeDirectory)
 
 import Data.Aeson
 import qualified Data.ByteString.Lazy as B

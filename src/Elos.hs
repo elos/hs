@@ -1,6 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Elos where
+module Elos (
+    elosRunApp
+    ) where
 
 import Elos.Autonomous
 import qualified Elos.Config as Config
