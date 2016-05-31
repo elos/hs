@@ -1,16 +1,16 @@
 module Elos.Autonomous where
 
-import Control.Monad (forever)
-import Control.Monad.IO.Class (liftIO)
-import Data.Conduit
 import Elos.DB
 
+import Control.Monad (forever)
+import Control.Monad.IO.Class (liftIO)
 import Control.Monad.IO.Class (MonadIO)
 import Control.Monad.Trans.Class (lift)
 import Control.Monad.Trans.Reader (ReaderT (runReaderT), ask)
 
 import Data.Aeson
 import qualified Data.ByteString.Lazy as B
+import Data.Conduit
 import qualified Data.Conduit.List as CL
 import qualified Network.WebSockets as WS
 
