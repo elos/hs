@@ -7,8 +7,7 @@ module Elos.Autonomous (
 import Elos.DB (Change)
 
 import Control.Monad (forever)
-import Control.Monad.IO.Class (liftIO)
-import Control.Monad.IO.Class (MonadIO)
+import Control.Monad.IO.Class (MonadIO, liftIO)
 import Control.Monad.Trans.Class (lift)
 import Control.Monad.Trans.Reader (ReaderT (runReaderT), ask)
 
