@@ -26,14 +26,16 @@ data Change = ChangeUpdate { recordKind :: String, record :: Object }
             | ChangeDelete { recordKind :: String, record :: Object }
             deriving (Show)
 
-makeChange 1 = ChangeUpdate
-makeChange 2 = ChangeDelete
+makeChange 1 = Just ChangeUpdate
+makeChange 2 = Just ChangeDelete
+makeChange _ = Nothing
 
 instance FromJSON Change where
     parseJSON (Object o) = do
         changeKind <- o .: "change_kind" :: Parser Int
-        let cons = makeChange changeKind
         recordKind <- o .: "record_kind"
         record <- o .: "record"
-        return $ cons recordKind record
+        case makeChange changeKind of
+            Nothing -> fail "Invalid change_kind"
+            Just cons -> return $ cons recordKind record
 
