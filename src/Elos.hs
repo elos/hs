@@ -23,7 +23,7 @@ authRoute :: String -> String -> String
 authRoute public private = "/record/changes/?public=" ++ public ++
                        "&private" ++ private
 
-elosRunApp :: WS.ClientApp () -> IO ()
+elosRunApp :: WS.ClientApp a -> IO a
 elosRunApp app = do
     Config{..} <- defaultConfigPath >>= loadConfig
     let route = authRoute publicCredential privateCredential
