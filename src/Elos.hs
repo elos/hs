@@ -20,8 +20,10 @@ import qualified Data.Text.IO as T
 import qualified Network.WebSockets as WS
 
 authRoute :: String -> String -> String
-authRoute public private = "/record/changes/?public=" ++ public ++
-                       "&private" ++ private
+authRoute public private = concat [
+                            "/record/changes/?public=", public,
+                            "&private=", private
+                           ]
 
 elosRunApp :: WS.ClientApp a -> IO a
 elosRunApp app = do
