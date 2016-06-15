@@ -1,11 +1,11 @@
-{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE OverloadedStrings, RecordWildCards #-}
 
 module Elos (
     elosRunApp
     ) where
 
 import Elos.Autonomous
-import qualified Elos.Config as Config
+import Elos.Config
 import qualified Elos.DB as DB
 import Elos.Models
 
@@ -25,11 +25,8 @@ authRoute public private = "/record/changes/?public=" ++ public ++
 
 elosRunApp :: WS.ClientApp () -> IO ()
 elosRunApp app = do
-    config <- Config.defaultConfigPath >>= Config.loadConfig
-    let host = Config.host config
-        route = authRoute
-            (Config.publicCredential config)
-            (Config.privateCredential config)
+    Config{..} <- defaultConfigPath >>= loadConfig
+    let route = authRoute publicCredential privateCredential
     WS.runClientWith
         host
         80
