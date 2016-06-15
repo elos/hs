@@ -27,7 +27,7 @@ defaultConfigPath = fmap (++ "/elosconfig.json") getHomeDirectory
 loadConfig :: FilePath -> IO Config
 loadConfig fp = do
     configFile <- B.readFile fp
-    case decode configFile of
-        Nothing -> fail $ "could not parse " ++ fp
-        Just config -> return config
+    case eitherDecode configFile of
+        Left msg -> fail msg
+        Right config -> return config
 
