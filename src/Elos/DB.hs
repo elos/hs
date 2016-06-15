@@ -33,9 +33,8 @@ makeChange _ = Nothing
 instance FromJSON Change where
     parseJSON (Object o) = do
         changeKind <- o .: "change_kind" :: Parser Int
-        recordKind <- o .: "record_kind"
-        record <- o .: "record"
         case makeChange changeKind of
             Nothing -> fail "Invalid change_kind"
-            Just cons -> return $ cons recordKind record
+            Just cons -> cons <$> o .: "record_kind"
+                              <*> o .: "record"
 
