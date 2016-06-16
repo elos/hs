@@ -31,7 +31,7 @@ makeChange 2 = Just ChangeDelete
 makeChange _ = Nothing
 
 instance FromJSON Change where
-    parseJSON (Object o) = do
+    parseJSON = withObject "change" $ \o -> do
         changeKind <- o .: "change_kind" :: Parser Int
         case makeChange changeKind of
             Nothing -> fail "Invalid change_kind"
