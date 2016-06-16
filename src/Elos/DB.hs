@@ -3,11 +3,8 @@
 module Elos.DB where
 
 import Data.Aeson.Types
-import Control.Lens
 import Data.ByteString as B
-import Data.ByteString.Lazy as BL
 import Data.Text as T
-import Network.WebSockets
 
 data DB = DB {
     host :: String,
