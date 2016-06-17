@@ -1,6 +1,10 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Elos.DB where
+module Elos.DB (
+    DB(..),
+    Query(..),
+    Change(..),
+    ) where
 
 import Data.Aeson.Types
 import Data.ByteString as B
