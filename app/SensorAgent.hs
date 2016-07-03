@@ -18,7 +18,7 @@ data SensorEvent = SensorEvent {
 instance FromJSON SensorEvent where
     parseJSON = withObject "sensor event" $ \o ->
         SensorEvent <$> o .: "time"
-                   <*> o .: "data"
+                    <*> o .: "data"
 
 data SensorEventData = SensorEventData {
     light :: Float,
@@ -27,8 +27,8 @@ data SensorEventData = SensorEventData {
 
 instance FromJSON SensorEventData where
     parseJSON = withObject "sensor event data" $ \o ->
-        SensorEventData <$> o .: "sensor"
-                       <*> o .: "sound"
+        SensorEventData <$> o .: "light"
+                        <*> o .: "sound"
 
 sensorAgent :: FilePath -> Agent
 sensorAgent fp = listenForChange $ writeSensorValue fp
@@ -42,7 +42,8 @@ writeSensorValue fp ChangeUpdate{..} = do
 showSensorEvent :: SensorEvent -> String
 showSensorEvent event = concat [
                         time event, ",",
-                        show . light . sensorData $ event, "\n"
+                        show . light . sensorData $ event, ",",
+                        show . sound . sensorData $ event, "\n"
                        ]
 
 
