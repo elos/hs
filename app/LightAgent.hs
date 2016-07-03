@@ -1,6 +1,6 @@
 {-# LANGUAGE RecordWildCards, OverloadedStrings #-}
 
-module LightAgent where
+module SensorAgent where
 
 import Elos
 import Elos.Autonomous
@@ -10,37 +10,39 @@ import Data.Aeson
 import Data.Aeson.Types
 import qualified Data.HashMap.Strict as M
 
-data LightEvent = LightEvent {
+data SensorEvent = SensorEvent {
     time :: String,
-    lightData :: LightEventData
+    sensorData :: SensorEventData
 }
 
-instance FromJSON LightEvent where
-    parseJSON = withObject "light event" $ \o ->
-        LightEvent <$> o .: "time"
+instance FromJSON SensorEvent where
+    parseJSON = withObject "sensor event" $ \o ->
+        SensorEvent <$> o .: "time"
                    <*> o .: "data"
 
-data LightEventData = LightEventData {
-    light :: Float
+data SensorEventData = SensorEventData {
+    light :: Float,
+    sound :: Float
 }
 
-instance FromJSON LightEventData where
-    parseJSON = withObject "light event data" $ \o ->
-        LightEventData <$> o .: "light"
+instance FromJSON SensorEventData where
+    parseJSON = withObject "sensor event data" $ \o ->
+        SensorEventData <$> o .: "sensor"
+                       <*> o .: "sound"
 
-lightAgent :: FilePath -> Agent
-lightAgent fp = listenForChange $ writeLightValue fp
+sensorAgent :: FilePath -> Agent
+sensorAgent fp = listenForChange $ writeSensorValue fp
 
-writeLightValue :: FilePath -> Change -> IO ()
-writeLightValue fp ChangeUpdate{..} = do
+writeSensorValue :: FilePath -> Change -> IO ()
+writeSensorValue fp ChangeUpdate{..} = do
     case parseMaybe parseJSON record of
-        Just event -> appendFile fp $ showLightEvent event
+        Just event -> appendFile fp $ showSensorEvent event
         Nothing -> return ()
 
-showLightEvent :: LightEvent -> String
-showLightEvent event = concat [
+showSensorEvent :: SensorEvent -> String
+showSensorEvent event = concat [
                         time event, ",",
-                        show . light . lightData $ event, "\n"
+                        show . light . sensorData $ event, "\n"
                        ]
 
 
