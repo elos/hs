@@ -23,8 +23,8 @@ data Query a = Query {
     attrs :: a
 }
 
-data Change = ChangeUpdate { recordKind :: String, record :: Object }
-            | ChangeDelete { recordKind :: String, record :: Object }
+data Change = ChangeUpdate { recordKind :: String, record :: Value }
+            | ChangeDelete { recordKind :: String, record :: Value }
             deriving (Show)
 
 makeChangeCons 1 = Just ChangeUpdate
