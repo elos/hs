@@ -9,7 +9,7 @@ echoAgent = listenForChange (putStrLn . show)
 dummyAgent :: String -> Agent
 dummyAgent output = listenForChange (putStrLn . const output)
 
-agents = [echoAgent, dummyAgent "Hello!", echoAgent]
+agents = [dummyAgent "I got an Event!", echoAgent]
 
 main :: IO ()
 main = elosRunApp $ agentApp agents
