@@ -12,23 +12,20 @@ import qualified Data.HashMap.Strict as M
 
 data SensorEvent = SensorEvent {
     time :: String,
-    sensorData :: SensorEventData
-}
-
-instance FromJSON SensorEvent where
-    parseJSON = withObject "sensor event" $ \o ->
-        SensorEvent <$> o .: "time"
-                    <*> o .: "data"
-
-data SensorEventData = SensorEventData {
     light :: Float,
     sound :: Float
 }
 
-instance FromJSON SensorEventData where
-    parseJSON = withObject "sensor event data" $ \o ->
-        SensorEventData <$> o .: "light"
-                        <*> o .: "sound"
+instance FromJSON SensorEvent where
+    parseJSON = withObject "sensor event" $ \o -> do
+        time <- o .: "time"
+
+        sensorData <- o .: "data"
+
+        light <- sensorData .: "light"
+        sound <- sensorData .: "sound"
+
+        return SensorEvent{..}
 
 sensorAgent :: FilePath -> Agent
 sensorAgent fp = listenForChange $ writeSensorValue fp
@@ -42,8 +39,8 @@ writeSensorValue fp ChangeUpdate{..} =
 showSensorEvent :: SensorEvent -> String
 showSensorEvent event = concat [
                             time event, ",",
-                            show . light . sensorData $ event, ",",
-                            show . sound . sensorData $ event, "\n"
+                            show . light $ event, ",",
+                            show . sound $ event, "\n"
                         ]
 
 
