@@ -27,7 +27,7 @@ wsSource = do
     yield x
 
 changes :: (MonadIO m) => Source (WebsocketsT m) Change
-changes = wsSource $= jsonConduit
+changes = wsSource =$= jsonConduit
 
 jsonConduit :: (Monad m, FromJSON a) => Conduit B.ByteString m a
 jsonConduit = CL.mapMaybe decode
