@@ -41,9 +41,9 @@ writeSensorValue fp ChangeUpdate{..} =
 
 showSensorEvent :: SensorEvent -> String
 showSensorEvent event = concat [
-                        time event, ",",
-                        show . light . sensorData $ event, ",",
-                        show . sound . sensorData $ event, "\n"
-                       ]
+                            time event, ",",
+                            show . light . sensorData $ event, ",",
+                            show . sound . sensorData $ event, "\n"
+                        ]
 
 
