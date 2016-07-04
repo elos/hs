@@ -34,7 +34,7 @@ sensorAgent :: FilePath -> Agent
 sensorAgent fp = listenForChange $ writeSensorValue fp
 
 writeSensorValue :: FilePath -> Change -> IO ()
-writeSensorValue fp ChangeUpdate{..} = do
+writeSensorValue fp ChangeUpdate{..} =
     case parseMaybe parseJSON record of
         Just event -> appendFile fp $ showSensorEvent event
         Nothing -> return ()
