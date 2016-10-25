@@ -27,6 +27,9 @@ instance FromJSON SensorEvent where
 
         return SensorEvent{..}
 
+instance Show SensorEvent where
+    show = showSensorEvent
+
 sensorAgent :: FilePath -> Agent
 sensorAgent fp = listenForChange $ writeSensorValue fp
 
@@ -37,10 +40,9 @@ writeSensorValue fp ChangeUpdate{..} =
         Nothing -> return ()
 
 showSensorEvent :: SensorEvent -> String
-showSensorEvent event = concat [
-                            time event, ",",
-                            show . light $ event, ",",
-                            show . sound $ event, "\n"
-                        ]
+showSensorEvent event = concat [ time event, ","
+                               , show . light $ event, ","
+                               , show . sound $ event, "\n"
+                               ]
 
 
